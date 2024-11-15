@@ -321,7 +321,10 @@ class GANLoss(nn.Module):
         else:
             raise NotImplementedError('gan mode %s not implemented' % gan_mode)
 
-    def get_target_tensor(self, prediction, target_is_real):
+    def get_target_tensor(self,
+                          prediction: torch.tensor,
+                          target_is_real: bool):
+
         """Create label tensors with the same size as the input.
 
         Parameters:
@@ -338,7 +341,9 @@ class GANLoss(nn.Module):
             target_tensor = self.fake_label
         return target_tensor.expand_as(prediction)
 
-    def __call__(self, prediction, target_is_real):
+    def __call__(self, prediction: torch.tensor,
+                 target_is_real: bool):
+
         """Calculate loss given Discriminator's output and grount truth labels.
 
         Parameters:
@@ -349,7 +354,7 @@ class GANLoss(nn.Module):
             the calculated loss.
         """
         if self.gan_mode in ['lsgan', 'vanilla']:
-            target_tensor = self.get_target_tensor(prediction, target_is_real)
+            target_tensor = self.get_target_tensor(prediction=prediction, target_is_real=target_is_real)
             loss = self.loss(prediction, target_tensor)
         elif self.gan_mode == 'wgangp':
             if target_is_real:
@@ -359,7 +364,13 @@ class GANLoss(nn.Module):
         return loss
 
 
-def cal_gradient_penalty(netD, real_data, fake_data, device, type='mixed', constant=1.0, lambda_gp=10.0):
+def cal_gradient_penalty(netD: callable,
+                         real_data:torch.tensor,
+                         fake_data:torch.tensor,
+                         device:str,
+                         type: str = 'mixed',
+                         constant:float=1.0,
+                         lambda_gp:float=10.0):
     """Calculate the gradient penalty loss, used in WGAN-GP paper https://arxiv.org/abs/1704.00028
 
     Arguments:
