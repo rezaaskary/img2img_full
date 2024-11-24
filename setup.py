@@ -15,5 +15,5 @@ setup(
     author='Mohammad Reza Askari',
     author_email='reza.askary99@gmail.com',
     description='Implementation of CycleGAN & Pix2Pix',
-    long_description=open('../README.md').read(),
+    long_description=open('./README.md').read(),
 )
